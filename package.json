@@ -1,5 +1,5 @@
 {
-  "name": "mytest-pablornc",
+  "name": "djs-minigames",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint .",
@@ -9,7 +9,7 @@
   "keywords": [],
   "author": "PabloRNC",
   "license": "MIT",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "types": "src/index.d.ts",
   "main": "dist/index.js",
   "dependencies": {

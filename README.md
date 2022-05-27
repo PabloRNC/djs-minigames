@@ -1,15 +1,15 @@
-# DISCORD.JS-MINIGAMES
+# discord-minigames
 
-This module allows you to make minigames on your discord bot using discord.js. At this time discord.js-minigames only have the TicTacToe minigame but more mini-games will be available soon.
+This module allows you to make minigames on your discord bot using discord.js. At this time discord-minigames only have the TicTacToe minigame but more mini-games will be available soon.
 
-How to create a discord.js-minigames client:
+How to create a discord-minigames client:
 ```js
-const {Client} = require("discord.js-minigames")
+const {Client} = require("discord-minigames")
 
 const myAwesomeClient = new Client({
-    playMoreThanOne: true //if false each type of mini-game can only be played once at a time
-    emitEvents: true //if false the module will not emit any event
-    defaultTimeout: 60000 //the default timeout of the module if in the minigames that require a timeout the timeout is not given it will replaced by this timeout in ms
+    playMoreThanOne: true, //if false each type of mini-game can only be played once at a time
+    emitEvents: true, //if false the module will not emit any event
+    defaultTimeout: 60000, //the default timeout of the module if in the minigames that require a timeout the timeout is not given it will replaced by this timeout in ms
 })
 
 ```
@@ -17,7 +17,7 @@ const myAwesomeClient = new Client({
 # TICTACTOE
 How to create a tictactoe game:
 ```js
-const {TicTacToe} = require("discord.js-minigames")
+const {TicTacToe} = require("discord-minigames")
 
 new TicTacToe(myAwesomeClient, interaction, user, {
     embedColor: "GREEN", //The color of the embed when the tictactoe is playing
@@ -29,7 +29,13 @@ new TicTacToe(myAwesomeClient, interaction, user, {
     _emoji: ""➖"", //The neutral emoji that will be in the tictactoe by default the emoji will be "➖"​
 }).play() //the method to start the tictactoe
 
-//myAwesomeClient refers to a discord.js-minigames client, interaction to a discord.js Interaction and user a discord.js User
+//myAwesomeClient refers to a discord-minigames client, interaction to a discord.js Interaction and user a discord.js User
+
+//There is an event that is emited whenever a tictactoe ends and returns the tictactoe class
+
+myAwesomeClient.on("tictactoeEnd", tictactoe => {
+    console.log(tictactoe)
+})
 ```
 
 If you want to open an issue, report a bug or do a pull request go to the module [GitHub]()

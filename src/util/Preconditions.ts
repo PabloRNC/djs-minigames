@@ -3,7 +3,7 @@ import { User, CommandInteraction } from 'discord.js'
 
 export function isClient(client: Client){
     if (!(client instanceof Client)){
-        throw new TypeError('An invalid discord.js-minigames was provided.')
+        throw new TypeError('An invalid djs-minigames was provided.')
     }
 }
 
