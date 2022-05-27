@@ -1,4 +1,4 @@
-# discord-minigames
+# DJS-MINIGAMES
 
 This module allows you to make minigames on your discord bot using discord.js. At this time discord-minigames only have the TicTacToe minigame but more mini-games will be available soon.
 
