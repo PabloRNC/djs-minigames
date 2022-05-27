@@ -1,4 +1,4 @@
-# discord-minigames
+# DJS-MINIGAMES
 
 This module allows you to make minigames on your discord bot using discord.js. At this time discord-minigames only have the TicTacToe minigame but more mini-games will be available soon.
 
@@ -26,7 +26,7 @@ new TicTacToe(myAwesomeClient, interaction, user, {
     timeoutEmbedColor: "RED", //The timeout embed color when the timeout ends
     xEmoji: "❌​", //The xEmoji that will be in the tictactoe by default the emoji will be "❌​"
     oEmoji: "⭕​", //The oEmoji that will be in the tictactoe by default the emoji will be "⭕​​"
-    _emoji: ""➖"", //The neutral emoji that will be in the tictactoe by default the emoji will be "➖"​
+    _emoji: "➖", //The neutral emoji that will be in the tictactoe by default the emoji will be "➖"​
 }).play() //the method to start the tictactoe
 
 //myAwesomeClient refers to a discord-minigames client, interaction to a discord.js Interaction and user a discord.js User
