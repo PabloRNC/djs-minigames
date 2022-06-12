@@ -1,4 +1,2 @@
-export { Client } from './structures/Client'
-export { TicTacToe } from './structures/TicTacToe'
-
-
+export { Client } from "./structures/Client"
+export { TicTacToe } from "./structures/TicTacToe"

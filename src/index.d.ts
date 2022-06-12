@@ -1,9 +1,10 @@
-declare module "mytest-pablornc"{
+declare module "djs-minigames"{
 import { CommandInteraction, User, ColorResolvable } from "discord.js"
 import {EventEmitter} from "node:events"
 export class Client extends EventEmitter implements ClientOptions{
     public playMoreThanOne?: boolean;
     public defaultTimeout?: number;
+    public language?: "EN" | "ES"
     constructor(options?:ClientOptions)
 }
 export class TicTacToe implements TicTacToeOptions{
@@ -32,5 +33,6 @@ export interface TicTacToeOptions{
 export interface ClientOptions{
     playMoreThanOne?: boolean | null
     defaultTimeout?: number | null
+    language?: "ES" | "EN"
 }
 }

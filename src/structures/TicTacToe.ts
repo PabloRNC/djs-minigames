@@ -1,7 +1,8 @@
-import type { CommandInteraction, User, ColorResolvable, Message, InteractionCollector } from 'discord.js'
+import { CommandInteraction, User, ColorResolvable, Message, InteractionCollector } from 'discord.js'
 import { MessageEmbed, MessageActionRow, MessageButton } from 'discord.js'
 import type { Client } from './Client'
 import { isUser, isInteraction, isClient } from '../util/Preconditions'
+import Languages from "../util/Languages.json"
 const playing = new Set()
 
 
@@ -24,14 +25,14 @@ export class TicTacToe implements TicTacToeOptions{
       this.gameClient = gameClient
       this.interaction = interaction
       this.target = user
-      this.timeout = options.timeout ?? this.gameClient.defaultTimeout
+      this.timeout = options?.timeout ?? this.gameClient.defaultTimeout
       this.user = this.interaction.user
-      this.embedColor = options.embedColor ?? 'BLUE'
-      this.xEmoji = options.xEmoji ?? '❌​'
-      this.oEmoji = options.oEmoji ?? '⭕​'
-      this._emoji = options._emoji ?? '➖'
-      this.embedFooter = options.embedFooter ?? 'Whoever thinks the most will win'
-      this.timeoutEmbedColor = options.timeoutEmbedColor ?? 'RED'
+      this.embedColor = options?.embedColor ?? 'BLUE'
+      this.xEmoji = options?.xEmoji ?? '❌​'
+      this.oEmoji = options?.oEmoji ?? '⭕​'
+      this._emoji = options?._emoji ?? '➖'
+      this.embedFooter = options?.embedFooter ?? Languages.TicTacToe[this.gameClient.language].embedFooter
+      this.timeoutEmbedColor = options?.timeoutEmbedColor ?? 'RED'
       this.positions = {}
       this.status = null
 
@@ -39,17 +40,18 @@ export class TicTacToe implements TicTacToeOptions{
     }
 
     public async play(){
+    const Dictionary = Languages.TicTacToe[this.gameClient.language]
+     if(this.target.bot) return this.interaction.reply({content: Dictionary.playerBOT, ephemeral: true})
+     if (this.target === this.interaction.user) return this.interaction.reply({ content: Dictionary.samePlayer, ephemeral: true })
      if (!this.gameClient.playMoreThanOne){
-     if (playing.has(this.user.id && 'playing')) return this.interaction.reply({ content: 'You\'re already playing a TicTacToe', ephemeral: true })
-     if (playing.has(this.target.id && 'playing')) return this.interaction.reply({ content: 'This person is already playing a TicTacToe', ephemeral: true })
-     if (playing.has(this.user.id && 'requesting')) return this.interaction.reply({ content: 'You\'re already waiting a request for a TicTacToe', ephemeral: true })
-     if (playing.has(this.target.id && 'requesting')) return this.interaction.reply({ content: 'This person is waiting a request for a TicTacToe' })
+     if (playing.has(this.user.id && 'playing')) return this.interaction.reply({ content: Dictionary.alreadyPlaying, ephemeral: true })
+     if (playing.has(this.target.id && 'playing')) return this.interaction.reply({ content: Dictionary.targetPlaying, ephemeral: true })
+     if (playing.has(this.user.id && 'requesting')) return this.interaction.reply({ content: Dictionary.alreadyChallenged, ephemeral: true })
+     if (playing.has(this.target.id && 'requesting')) return this.interaction.reply({ content: Dictionary.targetChallenged, ephemeral: true})
     }
      isClient(this.gameClient)
      isInteraction(this.interaction)
      isUser(this.target)
-     if (this.target.bot) return this.interaction.reply({ content: 'You can\'t challenge a bot', ephemeral: true })
-     if (this.target === this.interaction.user) return this.interaction.reply({ content: 'You can\'t challenge yourself', ephemeral: true })
      const btns: MessageButton[] = [
 
         new MessageButton()
@@ -92,7 +94,7 @@ export class TicTacToe implements TicTacToeOptions{
 
     const embed = new MessageEmbed()
         .setTitle('TicTacToe')
-        .setDescription(`${this.target.toString()}, Accept or Decline the TicTacToe`)
+        .setDescription(`${this.target.toString()}, ${Dictionary.requestEmbedDescription}`)
         .setColor(this.embedColor)
         .setFooter({ text: this.embedFooter })
 
@@ -101,11 +103,11 @@ export class TicTacToe implements TicTacToeOptions{
         .addComponents(
             new MessageButton()
             .setCustomId('accept')
-            .setLabel('Accept')
+            .setLabel(Dictionary.Accept)
             .setStyle('SUCCESS'),
             new MessageButton()
             .setCustomId('decline')
-            .setLabel('Decline')
+            .setLabel(Dictionary.Decline)
             .setStyle('DANGER')
         )
 
@@ -121,8 +123,8 @@ export class TicTacToe implements TicTacToeOptions{
          playing.delete(this.user.id && 'requesting')
          playing.delete(this.target.id && 'requesting')
          }
-         if (i.user !== this.target) return i.reply({ content: 'You aren\'t the one who was challenged', ephemeral: true })
-         i.reply({ content: 'TicTacToe accepted', ephemeral: true })
+         if (i.user !== this.target) return i.reply({ content: Dictionary.noChallenged, ephemeral: true })
+         i.reply({ content: Dictionary.Accepted, ephemeral: true })
          collector.stop()
          if (!this.gameClient.playMoreThanOne){
          playing.add(this.user.id && 'playing')
@@ -130,7 +132,7 @@ export class TicTacToe implements TicTacToeOptions{
          }
          const embed = new MessageEmbed()
          .setTitle('TicTacToe')
-         .setDescription(`${this.target.toString()}, you have to play with ${this.oEmoji}`)
+         .setDescription(`${this.target.toString()}, ${Dictionary.haveToPlay} ${this.oEmoji}`)
          .setFooter({ text: this.embedFooter })
          .setColor(this.embedColor)
 
@@ -187,8 +189,8 @@ export class TicTacToe implements TicTacToeOptions{
          let turnEmoji = this.oEmoji
          collector1.on('collect', async(i) => {
 
-             if (this.oEmoji === turnEmoji && i.user !== this.target) return i.reply({ content: i.user === this.interaction.user? 'Isn\'t your turn wait until the opponent finish': 'You\'re not playing this game', ephemeral: true })
-             if (this.xEmoji === turnEmoji && i.user !== this.interaction.user) return i.reply({ content: i.user === this.target? 'Isn\'t your turn wait until the opponent finish': 'You\'re not playing this game', ephemeral: true })
+             if (this.oEmoji === turnEmoji && i.user !== this.target) return i.reply({ content: i.user === this.interaction.user? Dictionary.isNotYourTurn: Dictionary.isNotPlaying, ephemeral: true })
+             if (this.xEmoji === turnEmoji && i.user !== this.interaction.user) return i.reply({ content: i.user === this.target? Dictionary.isNotYourTurn: Dictionary.isNotPlaying, ephemeral: true })
              if (turnEmoji === this.oEmoji && i.user === this.target){
                  await i.deferUpdate()
                     const btn = btns.filter(b => b.customId === i.customId)
@@ -260,7 +262,7 @@ export class TicTacToe implements TicTacToeOptions{
                      === btns[5].label && btns[2].label === btns[8].label && btns[2].label !== `${this._emoji}`|| btns[0].label === btns[1].label && btns[0].label === btns[2].label && btns[0].label !== `${this._emoji}`|| btns[3].label === btns[4].label && btns[3].label === btns[5].label && btns[3].label !== `${this._emoji}`||
                      btns[6].label === btns[7].label && btns[6].label === btns[8].label && btns[6].label !== `${this._emoji}`|| btns[0].label === btns[4].label && btns[0].label === btns[8].label && btns[0].label !== `${this._emoji}`|| btns[2].label === btns[4].label && btns[2].label === btns[6].label && btns[2].label !== `${this._emoji}`){
                          const embed = new MessageEmbed()
-                         .setTitle('TicTacToe ended')
+                         .setTitle(Dictionary.Ended)
                          .setDescription(`${btns[0].label} | ${btns[1].label} | ${btns[2].label}\n${btns[3].label} | ${btns[4].label} | ${btns[5].label}\n${btns[6].label} | ${btns[7].label} | ${btns[8].label}`)
                          .setColor(this.embedColor)
                          .setTimestamp()
@@ -277,7 +279,7 @@ export class TicTacToe implements TicTacToeOptions{
                      }
                      if (btns.filter(b => b.label !== `${this._emoji}`).length === 9){
                          const embed = new MessageEmbed()
-                         .setTitle('TicTacToe tied')
+                         .setTitle(Dictionary.Tied)
                          .setDescription(`${btns[0].label} | ${btns[1].label} | ${btns[2].label}\n${btns[3].label} | ${btns[4].label} | ${btns[5].label}\n${btns[6].label} | ${btns[7].label} | ${btns[8].label}`)
                          .setColor(this.embedColor)
                          .setTimestamp()
@@ -293,7 +295,7 @@ export class TicTacToe implements TicTacToeOptions{
                          return i.editReply({ embeds: [embed], components: [] })
                      }
 
-                    i.editReply({ embeds: [embed.setDescription(`${this.interaction.user.toString()}, you have to play with ${this.xEmoji}`)], components: [row1, row2, row3] })
+                    i.editReply({ embeds: [embed.setDescription(`${this.interaction.user.toString()}, ${Dictionary.haveToPlay} ${this.xEmoji}`)], components: [row1, row2, row3] })
                  }
                  if (turnEmoji === this.xEmoji && i.user === this.interaction.user){
                      await i.deferUpdate()
@@ -306,7 +308,7 @@ export class TicTacToe implements TicTacToeOptions{
                      === btns[5].label && btns[2].label === btns[8].label && btns[2].label !== `${this._emoji}`|| btns[0].label === btns[1].label && btns[0].label === btns[2].label && btns[0].label !== `${this._emoji}`|| btns[3].label === btns[4].label && btns[3].label === btns[5].label && btns[3].label !== `${this._emoji}`||
                      btns[6].label === btns[7].label && btns[6].label === btns[8].label && btns[6].label !== `${this._emoji}`|| btns[0].label === btns[4].label && btns[0].label === btns[8].label && btns[0].label !== `${this._emoji}`|| btns[2].label === btns[4].label && btns[2].label === btns[6].label && btns[2].label !== `${this._emoji}`){
                           const embed = new MessageEmbed()
-                          .setTitle('TicTacToe ended')
+                          .setTitle(Dictionary.Ended)
                           .setDescription(`${btns[0].label} | ${btns[1].label} | ${btns[2].label}\n${btns[3].label} | ${btns[4].label} | ${btns[5].label}\n${btns[6].label} | ${btns[7].label} | ${btns[8].label}`)
                           .setColor(this.embedColor)
                           .setTimestamp()
@@ -325,7 +327,7 @@ export class TicTacToe implements TicTacToeOptions{
                       }
                       if (btns.filter(b => b.label !== `${this._emoji}`).length === 9){
                           const embed = new MessageEmbed()
-                          .setTitle('TicTacToe tied')
+                          .setTitle(Dictionary.Tied)
                           .setDescription(`${btns[0].label} | ${btns[1].label} | ${btns[2].label}\n${btns[3].label} | ${btns[4].label} | ${btns[5].label}\n${btns[6].label} | ${btns[7].label} | ${btns[8].label}`)
                           .setColor(this.embedColor)
                           .setTimestamp()
@@ -401,7 +403,7 @@ export class TicTacToe implements TicTacToeOptions{
 
                      turnEmoji = this.oEmoji
 
-                  i.editReply({ embeds: [embed.setDescription(`${this.target.toString()}, you have to play with ${this.oEmoji}`)], components: [row1, row2, row3] })
+                  i.editReply({ embeds: [embed.setDescription(`${this.target.toString()}, ${Dictionary.haveToPlay} ${this.oEmoji}`)], components: [row1, row2, row3] })
                   }
          })
         }
@@ -411,10 +413,10 @@ export class TicTacToe implements TicTacToeOptions{
             playing.delete(this.target.id && 'requesting')
             }
             await i.deferUpdate()
-            if (i.user !== this.target) return i.reply({ content: 'Isn\'t your decision', ephemeral: true })
+            if (i.user !== this.target) return i.reply({ content: Dictionary.Decision, ephemeral: true })
            const embed = new MessageEmbed()
-             .setTitle(':x: The TicTacToe has been denied')
-             .setDescription(`${this.target.toString()} denied the TicTacToe`)
+             .setTitle(`:x: ${Dictionary.Denied}`)
+             .setDescription(`${Dictionary.whoDenied} ${this.target.toString()}`)
              .setColor(this.timeoutEmbedColor)
              .setTimestamp()
 
@@ -435,8 +437,8 @@ export class TicTacToe implements TicTacToeOptions{
             }
         if (reason === 'time'){
             const embed = new MessageEmbed()
-            .setTitle(':x: The time finish')
-            .setDescription('The time to accept or decline the TicTacToe has ended')
+            .setTitle(`:x: ${Dictionary.timeout}`)
+            .setDescription(Dictionary.timeoutMessage)
             .setColor(this.timeoutEmbedColor)
             .setTimestamp()
 

@@ -10,6 +10,7 @@ const myAwesomeClient = new Client({
     playMoreThanOne: true, //if false each type of mini-game can only be played once at a time
     emitEvents: true, //if false the module will not emit any event
     defaultTimeout: 60000, //the default timeout of the module if in the minigames that require a timeout the timeout is not given it will replaced by this timeout in ms
+    language: "EN" //the language that all the games will be. They can be in English or Spanish
 })
 
 ```
@@ -38,5 +39,5 @@ myAwesomeClient.on("tictactoeEnd", tictactoe => {
 })
 ```
 
-If you want to open an issue, report a bug or do a pull request go to the module [GitHub]()
+If you want to open an issue, report a bug or do a pull request go to the module's [GitHub](https://github.com/PabloRNC/djs-minigames)
 

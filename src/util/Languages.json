@@ -1,0 +1,57 @@
+{
+    "TicTacToe": {
+    "EN": {
+       
+          "playerBOT": "You cannot challange a bot",
+          "samePlayer": "You cannot challange yourself",
+          "alreadyPlaying": "You are already playing a TicTacToe",
+          "targetPlaying": "This player is already playing a TicTacToe",
+          "alreadyChallenged": "You're already waiting a request for a TicTacToe",
+          "targetChallenged": "This player is already waiting a request for a TicTacToe",
+          "requestEmbedDescription": "Accept or Decline the TicTacToe",
+          "Accept": "Accept",
+          "Decline": "Decline",
+          "noChallenged": "You aren't the one who was challenged",
+          "Accepted": "TicTacToe accepted",
+          "haveToPlay": "You have to play with",
+          "isNotYourTurn": "It's not your turn wait until the opponent finish",
+          "isNotPlaying": "You're not playing this game",
+          "Ended": "TicTacToe ended",
+          "Tied": "TicTacToe tied",
+          "Decision": "Isn't your decision",
+          "Denied": "The TicTacToe has been denied",
+          "whoDenied": "The TicTacToe has been denied by",
+          "timeout": "Time finished",
+          "timeoutMessage": "The time to accept or decline the TicTacToe has ended",
+          "embedFooter": "Whoever thinks the most will win"
+        
+    },
+    "ES": {
+        
+            "playerBOT": "No puedes retar a un bot",
+            "samePlayer": "No puedes retarte a ti mismo",
+            "alreadyPlaying": "Ya estas jugando a un TicTacToe",
+            "targetPlaying": "Este jugador ya esta jugando a un TicTacToe",
+            "alreadyChallenged": "Ya estas esperando una solicitud para un TicTacToe",
+            "targetChallenged": "Este jugador ya esta esperando una solicitud para un TicTacToe",
+            "requestEmbedDescription": "Acepta o Rechaza el TicTacToe",
+            "Accept": "Aceptar",
+            "Decline": "Rechazar",
+            "noChallenged": "No eres tú el que ha sido retado",
+            "Accepted": "TicTacToe aceptado",
+            "haveToPlay": "Tienes que jugar con",
+            "isNotYourTurn": "No es tu turno espera hasta que el oponente termine",
+            "isNotPlaying": "No no estas jugando a este juego",
+            "Ended": "TicTacToe finalizado",
+            "Tied": "TicTacToe empatado",
+            "Decision": "No es tu decisión",
+            "Denied": "El TicTacToe ha sido rechazado",
+            "whoDenied": "El TicTacToe ha sido rechazado por",
+            "timeout": "El tiempo se acabó",
+            "timeoutMessage": "El tiempo para aceptar o rechazar el TicTacToe ha terminado",
+            "embedFooter": "El que piense más ganará"
+
+    
+    }
+}
+}
