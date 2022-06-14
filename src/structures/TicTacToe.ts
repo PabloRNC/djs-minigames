@@ -1,18 +1,19 @@
-import { CommandInteraction, User, ColorResolvable, Message, InteractionCollector } from 'discord.js'
+import { CommandInteraction, User, ColorResolvable, Message, InteractionCollector, TextBasedChannel } from 'discord.js'
 import { MessageEmbed, MessageActionRow, MessageButton } from 'discord.js'
-import type { Client } from './Client'
+import { Client } from './Client'
 import { isUser, isInteraction, isClient } from '../util/Preconditions'
 import Languages from "../util/Languages.json"
 const playing = new Set()
 
 
 export class TicTacToe implements TicTacToeOptions{
+    public textChannel?: TextBasedChannel
     public embedColor?: ColorResolvable
     public winner? : any
     public timeout?: number
     public xEmoji?: string
     public oEmoji?: string
-    public _emoji?:string
+    public _emoji?: string
     public embedFooter?: string
     public timeoutEmbedColor?: ColorResolvable
     public gameClient: Client
@@ -35,6 +36,7 @@ export class TicTacToe implements TicTacToeOptions{
       this.timeoutEmbedColor = options?.timeoutEmbedColor ?? 'RED'
       this.positions = {}
       this.status = null
+      this.textChannel = this.interaction.channel
 
 
     }
@@ -273,6 +275,7 @@ export class TicTacToe implements TicTacToeOptions{
                         playing.delete(this.user.id && 'playing')
                         }
                          this.status = 'won'
+                         this.winner = this.target
                          this.positions = { u1: btns[0].label, u2: btns[1].label, u3: btns[2].label, m1: btns[3].label, m2: btns[4].label, m3: btns[5].label, d1: btns[6].label, d2: btns[7].label, d3: btns[8].label }
                         if (this.gameClient.emitEvents) this.gameClient.emit('tictactoeEnd', this)
                          return i.editReply({ embeds: [embed], components: [] })
@@ -465,3 +468,4 @@ _emoji?:string
 embedFooter?: string
 timeoutEmbedColor?: ColorResolvable
 }
+

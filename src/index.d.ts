@@ -4,6 +4,7 @@ import {EventEmitter} from "node:events"
 export class Client extends EventEmitter implements ClientOptions{
     public playMoreThanOne?: boolean;
     public defaultTimeout?: number;
+    public emitEvents?: boolean
     public language?: "EN" | "ES"
     constructor(options?:ClientOptions)
 }
@@ -33,6 +34,7 @@ export interface TicTacToeOptions{
 export interface ClientOptions{
     playMoreThanOne?: boolean | null
     defaultTimeout?: number | null
+    emitEvents?: boolean
     language?: "ES" | "EN"
 }
 }

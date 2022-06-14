@@ -4,7 +4,7 @@ This module allows you to make minigames on your discord bot using discord.js. A
 
 How to create a discord-minigames client:
 ```js
-const {Client} = require("discord-minigames")
+const {Client} = require("djs-minigames")
 
 const myAwesomeClient = new Client({
     playMoreThanOne: true, //if false each type of mini-game can only be played once at a time
@@ -18,7 +18,7 @@ const myAwesomeClient = new Client({
 # TICTACTOE
 How to create a tictactoe game:
 ```js
-const {TicTacToe} = require("discord-minigames")
+const {TicTacToe} = require("djs-minigames")
 
 new TicTacToe(myAwesomeClient, interaction, user, {
     embedColor: "GREEN", //The color of the embed when the tictactoe is playing
