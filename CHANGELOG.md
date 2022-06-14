@@ -1,6 +1,10 @@
 # DJS-MINIGAMES CHANGELOG
 In this file the djs-minigames changes over the versions will appear
 
+# 1.0.8
+
+Added Eslint
+
 # 1.0.7
 
 Fixed some issues and added the property textChannel to the TicTacToe
