@@ -1,6 +1,10 @@
 # DJS-MINIGAMES CHANGELOG
 In this file the djs-minigames changes over the versions will appear
 
+# 1.1.0
+
+Updated to discord.js v14
+
 # 1.0.8
 
 Added Eslint

@@ -23,7 +23,8 @@
           "whoDenied": "The TicTacToe has been denied by",
           "timeout": "Time finished",
           "timeoutMessage": "The time to accept or decline the TicTacToe has ended",
-          "embedFooter": "Whoever thinks the most will win"
+          "embedFooter": "Whoever thinks the most will win",
+          "winnerMessage": "The winner is"
         
     },
     "ES": {
@@ -49,7 +50,8 @@
             "whoDenied": "El TicTacToe ha sido rechazado por",
             "timeout": "El tiempo se acabó",
             "timeoutMessage": "El tiempo para aceptar o rechazar el TicTacToe ha terminado",
-            "embedFooter": "El que piense más ganará"
+            "embedFooter": "El que piense más ganará",
+            "winnerMessage": "El ganador es"
 
     
     }

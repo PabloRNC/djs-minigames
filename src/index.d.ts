@@ -1,5 +1,5 @@
 import { CommandInteraction, User, ColorResolvable } from 'discord.js'
-import {EventEmitter} from 'node:events'
+import { EventEmitter } from 'node:events'
 declare module 'djs-minigames'{
 export class Client extends EventEmitter implements ClientOptions{
 	public playMoreThanOne?: boolean
@@ -19,7 +19,7 @@ export class TicTacToe implements TicTacToeOptions{
 	public interaction: CommandInteraction
 	public user: User
 	constructor(client: Client, interaction: CommandInteraction, user: User, options?: TicTacToeOptions)
-	public play():CommandInteraction['reply']
+	public play(): Promise<void | InteractionResponse<boolean>>
 }
 
 export interface TicTacToeOptions{
