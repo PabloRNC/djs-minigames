@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Client } from '../structures/Client'
 import { User, CommandInteraction } from 'discord.js'
 
@@ -23,7 +24,7 @@ export function isUser(user: User){
 
 export function validateClient(client: Client){
 	if (typeof client.emitEvents !== 'boolean'){
-		throw new TypeError(`The emitsEvents option of Djs-Minigames Client must to be a boolean, recived(${typeof client.emitEvents})`)
+		throw new TypeError(`The emitEvents option of Djs-Minigames Client must to be a boolean, recived(${typeof client.emitEvents})`)
 	}
 	if (typeof client.defaultTimeout !== 'number'){
 		throw new TypeError(`The defaultTimeout option of Djs-Minigames Client must to be a number, recived(${typeof client.defaultTimeout})`)
@@ -31,7 +32,7 @@ export function validateClient(client: Client){
 	if (typeof client.playMoreThanOne !== 'boolean'){
 		throw new TypeError(`The playMoreThanOne option of Djs-Minigames Client must to be a boolean, recived(${typeof client.playMoreThanOne}`)
 	}
-	if(!['ES', 'EN'].includes(client.language)){
+	if(!['ES', 'EN'].includes(client.language!)){
 		throw new TypeError(`The language of the Djs-Minigames Client is invalid, recived(${client.language})`)
 	}
 }

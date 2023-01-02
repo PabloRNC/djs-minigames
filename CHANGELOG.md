@@ -1,6 +1,30 @@
 # DJS-MINIGAMES CHANGELOG
 In this file the djs-minigames changes over the versions will appear
 
+# 1.1.6
+
+Fix errors
+
+# 1.1.5
+
+Fixed types
+
+# 1.1.4
+
+Fixed types
+
+# 1.1.3
+
+Fixed types
+
+# 1.1.2
+
+Fixed types
+
+# 1.1.2
+
+Fixed types
+
 # 1.1.1
 
 Fixed types and interaction errors

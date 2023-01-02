@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 
 import { CommandInteraction, User, ColorResolvable, Message, TextBasedChannel, ComponentType, APIButtonComponentWithCustomId, APIButtonComponent, InteractionResponse } from 'discord.js'
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle} from 'discord.js'
@@ -8,21 +9,21 @@ const playing = new Set()
 
 
 export class TicTacToe implements TicTacToeOptions{
-	public textChannel?: TextBasedChannel
-	public embedColor?: ColorResolvable
+	public textChannel?: TextBasedChannel | null
+	public embedColor?: ColorResolvable | null
 	public winner? : User | null
 	public timeout?: number
 	public xEmoji?: string
 	public oEmoji?: string
 	public _emoji?: string
-	public embedFooter?: string
-	public timeoutEmbedColor?: ColorResolvable
+	public embedFooter?: string | null
+	public timeoutEmbedColor?: ColorResolvable | null
 	public gameClient: Client
 	public interaction: CommandInteraction
 	public target: User
 	public user: User
 	public positions: object
-	public status: string
+	public status: string | null
 	constructor(gameClient: Client, interaction: CommandInteraction, user: User, options?: TicTacToeOptions){
 		this.gameClient = gameClient
 		this.interaction = interaction
@@ -33,7 +34,7 @@ export class TicTacToe implements TicTacToeOptions{
 		this.xEmoji = options?.xEmoji ?? '❌​'
 		this.oEmoji = options?.oEmoji ?? '⭕​'
 		this._emoji = options?._emoji ?? '➖'
-		this.embedFooter = options?.embedFooter ?? Languages.TicTacToe[this.gameClient.language].embedFooter
+		this.embedFooter = options?.embedFooter ?? Languages.TicTacToe[this.gameClient.language!].embedFooter
 		this.timeoutEmbedColor = options?.timeoutEmbedColor ?? 'Red'
 		this.positions = {}
 		this.status = null
@@ -44,7 +45,7 @@ export class TicTacToe implements TicTacToeOptions{
 	}
 
 	public async play() : Promise<void | InteractionResponse<boolean>> {
-		const Dictionary = Languages.TicTacToe[this.gameClient.language]
+		const Dictionary = Languages.TicTacToe[this.gameClient.language!]
 		if(this.target.bot) return this.interaction.reply({content: Dictionary.playerBOT, ephemeral: true})
 		if (this.target === this.interaction.user) return this.interaction.reply({ content: Dictionary.samePlayer, ephemeral: true })
 		if (!this.gameClient.playMoreThanOne){
@@ -99,8 +100,8 @@ export class TicTacToe implements TicTacToeOptions{
 		const embed = new EmbedBuilder()
 			.setTitle('TicTacToe')
 			.setDescription(`${this.target.toString()}, ${Dictionary.requestEmbedDescription}`)
-			.setColor(this.embedColor)
-			.setFooter({ text: this.embedFooter })
+			.setColor(this.embedColor!)
+			.setFooter({ text: this.embedFooter! })
 
 
 		const row = new ActionRowBuilder<ButtonBuilder>()
@@ -138,8 +139,8 @@ export class TicTacToe implements TicTacToeOptions{
 				const embed = new EmbedBuilder()
 					.setTitle('TicTacToe')
 					.setDescription(`${this.target.toString()}, ${Dictionary.haveToPlay} ${this.oEmoji}`)
-					.setFooter({ text: this.embedFooter })
-					.setColor(this.embedColor)
+					.setFooter({ text: this.embedFooter! })
+					.setColor(this.embedColor!)
 
 				const row1 = new ActionRowBuilder<ButtonBuilder>()
 					.addComponents([
@@ -205,7 +206,7 @@ export class TicTacToe implements TicTacToeOptions{
 							const embed = new EmbedBuilder()
 								.setTitle(Dictionary.Ended)
 								.setDescription(`${Dictionary.winnerMessage} ${this.target.toString()}\n${btns[0].data.label} | ${btns[1].data.label} | ${btns[2].data.label}\n${btns[3].data.label} | ${btns[4].data.label} | ${btns[5].data.label}\n${btns[6].data.label} | ${btns[7].data.label} | ${btns[8].data.label}`)
-								.setColor(this.embedColor)
+								.setColor(this.embedColor!)
 								.setTimestamp()
 
 							collector1.stop()
@@ -223,7 +224,7 @@ export class TicTacToe implements TicTacToeOptions{
 							const embed = new EmbedBuilder()
 								.setTitle(Dictionary.Tied)
 								.setDescription(`${btns[0].data.label} | ${btns[1].data.label} | ${btns[2].data.label}\n${btns[3].data.label} | ${btns[4].data.label} | ${btns[5].data.label}\n${btns[6].data.label} | ${btns[7].data.label} | ${btns[8].data.label}`)
-								.setColor(this.embedColor)
+								.setColor(this.embedColor!)
 								.setTimestamp()
 
 							if (!this.gameClient.playMoreThanOne){
@@ -251,7 +252,7 @@ export class TicTacToe implements TicTacToeOptions{
 							const embed = new EmbedBuilder()
 								.setTitle(Dictionary.Ended)
 								.setDescription(`${Dictionary.winnerMessage} ${this.user.toString()}\n${btns[0].data.label} | ${btns[1].data.label} | ${btns[2].data.label}\n${btns[3].data.label} | ${btns[4].data.label} | ${btns[5].data.label}\n${btns[6].data.label} | ${btns[7].data.label} | ${btns[8].data.label}`)
-								.setColor(this.embedColor)
+								.setColor(this.embedColor!)
 								.setTimestamp()
 
 							if (!this.gameClient.playMoreThanOne){
@@ -270,7 +271,7 @@ export class TicTacToe implements TicTacToeOptions{
 							const embed = new EmbedBuilder()
 								.setTitle(Dictionary.Tied)
 								.setDescription(`${btns[0].data.label} | ${btns[1].data.label} | ${btns[2].data.label}\n${btns[3].data.label} | ${btns[4].data.label} | ${btns[5].data.label}\n${btns[6].data.label} | ${btns[7].data.label} | ${btns[8].data.label}`)
-								.setColor(this.embedColor)
+								.setColor(this.embedColor!)
 								.setTimestamp()
 							if (!this.gameClient.playMoreThanOne){
 								playing.delete(this.target.id && 'playing')
@@ -320,7 +321,7 @@ export class TicTacToe implements TicTacToeOptions{
 				const embed = new EmbedBuilder()
 					.setTitle(`:x: ${Dictionary.Denied}`)
 					.setDescription(`${Dictionary.whoDenied} ${this.target.toString()}`)
-					.setColor(this.timeoutEmbedColor)
+					.setColor(this.timeoutEmbedColor!)
 					.setTimestamp()
 
 				const newRow = new ActionRowBuilder<ButtonBuilder>()
@@ -335,7 +336,7 @@ export class TicTacToe implements TicTacToeOptions{
 						
 			}
 		})
-		collector.on('end', async(collected, reason) => {
+		collector.on('end', async(_collected, reason) => {
 			if (!this.gameClient.playMoreThanOne){
 				playing.delete(this.user.id && 'requesting')
 				playing.delete(this.target.id && 'requesting')
@@ -344,7 +345,7 @@ export class TicTacToe implements TicTacToeOptions{
 				const embed = new EmbedBuilder()
 					.setTitle(`:x: ${Dictionary.timeout}`)
 					.setDescription(Dictionary.timeoutMessage)
-					.setColor(this.timeoutEmbedColor)
+					.setColor(this.timeoutEmbedColor!)
 					.setTimestamp()
 
 				const newRow = new ActionRowBuilder<ButtonBuilder>()
@@ -362,12 +363,12 @@ export class TicTacToe implements TicTacToeOptions{
 
 
 export interface TicTacToeOptions{
-embedColor?: ColorResolvable
+embedColor?: ColorResolvable | null
 timeout?: number
 xEmoji?: string
 oEmoji?: string
 _emoji?:string
-embedFooter?: string
-timeoutEmbedColor?: ColorResolvable
+embedFooter?: string | null
+timeoutEmbedColor?: ColorResolvable | null
 }
 
