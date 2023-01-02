@@ -1,6 +1,10 @@
 # DJS-MINIGAMES CHANGELOG
 In this file the djs-minigames changes over the versions will appear
 
+# 1.1.1
+
+Fixed types and interaction errors
+
 # 1.1.0
 
 Updated to discord.js v14

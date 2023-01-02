@@ -1,8 +1,10 @@
 import { EventEmitter } from 'node:events'
 import { validateClient } from '../util/Preconditions'
+import TypedEmitter from 'typed-emitter'
+import { Events } from '../util/Events'
 
 
-export class Client extends EventEmitter implements ClientOptions{
+export class Client extends (EventEmitter as new () => TypedEmitter<Events>) implements ClientOptions{
 	public playMoreThanOne?: boolean
 	public defaultTimeout?: number
 	public emitEvents? :boolean

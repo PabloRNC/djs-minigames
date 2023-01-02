@@ -1,5 +1,5 @@
 
-import { CommandInteraction, User, ColorResolvable, Message, InteractionCollector, TextBasedChannel, ComponentType, APIButtonComponentWithCustomId, APIButtonComponent, InteractionResponse } from 'discord.js'
+import { CommandInteraction, User, ColorResolvable, Message, TextBasedChannel, ComponentType, APIButtonComponentWithCustomId, APIButtonComponent, InteractionResponse } from 'discord.js'
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle} from 'discord.js'
 import { Client } from './Client'
 import { isUser, isInteraction, isClient } from '../util/Preconditions'
@@ -116,19 +116,20 @@ export class TicTacToe implements TicTacToeOptions{
 			])
 
 		const msg = await this.interaction.reply({ embeds: [embed], components: [row], fetchReply: true }) as Message
-		const collector = await msg.createMessageComponentCollector({ time: this.timeout, max: 1, componentType: ComponentType.Button })
+		const collector = msg.createMessageComponentCollector({ time: this.timeout, max: 1, componentType: ComponentType.Button })
 		if (!this.gameClient.playMoreThanOne){
 			playing.add(this.user.id && 'requesting')
 			playing.add(this.target.id && 'requesting')
 		}
 		collector.on('collect', async(i): Promise<any> => {
+			await i.deferUpdate()
 			if (i.customId === 'accept'){
 				if (!this.gameClient.playMoreThanOne){
 					playing.delete(this.user.id && 'requesting')
 					playing.delete(this.target.id && 'requesting')
 				}
-				if (i.user !== this.target) return i.reply({ content: Dictionary.noChallenged, ephemeral: true })
-				i.reply({ content: Dictionary.Accepted, ephemeral: true })
+				if (i.user !== this.target) return i.followUp({ content: Dictionary.noChallenged, ephemeral: true })
+				i.followUp({ content: Dictionary.Accepted, ephemeral: true })
 				collector.stop()
 				if (!this.gameClient.playMoreThanOne){
 					playing.add(this.user.id && 'playing')
@@ -162,14 +163,14 @@ export class TicTacToe implements TicTacToeOptions{
 					])
 
 				msg.edit({ embeds: [embed], components: [row1, row2, row3] })
-				const collector1 = await msg.createMessageComponentCollector() as InteractionCollector<any>
+				const collector1 = msg.createMessageComponentCollector({ componentType: ComponentType.Button })
 				let turnEmoji = this.oEmoji
-				collector1.on('collect', async(i) => {
+				collector1.on('collect', async(i): Promise<any> => {
+					await i.deferUpdate()
 
-					if (this.oEmoji === turnEmoji && i.user !== this.target) return i.reply({ content: i.user === this.interaction.user? Dictionary.isNotYourTurn: Dictionary.isNotPlaying, ephemeral: true })
-					if (this.xEmoji === turnEmoji && i.user !== this.interaction.user) return i.reply({ content: i.user === this.target? Dictionary.isNotYourTurn: Dictionary.isNotPlaying, ephemeral: true })
+					if (this.oEmoji === turnEmoji && i.user !== this.target) return i.followUp({ content: i.user === this.interaction.user? Dictionary.isNotYourTurn: Dictionary.isNotPlaying, ephemeral: true })
+					if (this.xEmoji === turnEmoji && i.user !== this.interaction.user) return i.followUp({ content: i.user === this.target? Dictionary.isNotYourTurn: Dictionary.isNotPlaying, ephemeral: true })
 					if (turnEmoji === this.oEmoji && i.user === this.target){
-						await i.deferUpdate()
 						const btn = btns.filter(b => (b.data as APIButtonComponentWithCustomId).custom_id === i.customId)
 						btn[0].data.label = this.oEmoji
 						btn[0].setDisabled()
@@ -239,7 +240,6 @@ export class TicTacToe implements TicTacToeOptions{
 						i.editReply({ embeds: [embed.setDescription(`${this.interaction.user.toString()}, ${Dictionary.haveToPlay} ${this.xEmoji}`)], components: [row1, row2, row3] })
 					}
 					if (turnEmoji === this.xEmoji && i.user === this.interaction.user){
-						await i.deferUpdate()
 						const btn = btns.filter(b => (b.data as APIButtonComponentWithCustomId).custom_id === i.customId)
 						btn[0].data.label = this.xEmoji
 						btn[0].setDisabled()
@@ -316,7 +316,7 @@ export class TicTacToe implements TicTacToeOptions{
 					playing.delete(this.target.id && 'requesting')
 				}
 				await i.deferUpdate()
-				if (i.user !== this.target) return i.reply({ content: Dictionary.Decision, ephemeral: true })
+				if (i.user !== this.target) return i.followUp({ content: Dictionary.Decision, ephemeral: true })
 				const embed = new EmbedBuilder()
 					.setTitle(`:x: ${Dictionary.Denied}`)
 					.setDescription(`${Dictionary.whoDenied} ${this.target.toString()}`)

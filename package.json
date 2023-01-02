@@ -10,11 +10,12 @@
   "keywords": [],
   "author": "PabloRNC",
   "license": "MIT",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "types": "src/index.d.ts",
   "main": "dist/index.js",
   "dependencies": {
-    "discord.js": "^14.7.1"
+    "discord.js": "^14.7.1",
+    "typed-emitter": "^2.1.0"
   },
   "description": "A powerful node module that allows to create minigames on discord bots using discord.js",
   "bugs": {

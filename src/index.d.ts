@@ -1,7 +1,9 @@
-import { CommandInteraction, User, ColorResolvable } from 'discord.js'
+import type{ CommandInteraction, User, ColorResolvable, InteractionResponse } from 'discord.js'
 import { EventEmitter } from 'node:events'
+import TypedEventEmitter from 'typed-emitter'
+import type{ Events } from './util/Events'
 declare module 'djs-minigames'{
-export class Client extends EventEmitter implements ClientOptions{
+export class Client extends (EventEmitter as new () => TypedEventEmitter<Events>) implements ClientOptions{
 	public playMoreThanOne?: boolean
 	public defaultTimeout?: number
 	public emitEvents?: boolean
